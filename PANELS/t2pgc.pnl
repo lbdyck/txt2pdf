@@ -1,0 +1,17 @@
+)Attr Default(%+_)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(turq) hilite(reverse)
+)Body Expand(\\)
+%-\-\- ~TXT2PDF JOB Copy %-\-\-
+%Select Processing Option:%===>_zcmd
++
+%    From Data Set: &T2PJCL
+%
+%    To Data Set: _T2P2JCL
+%    (will be created if it doesn't exist)
++
+)INIT
+ .cursor = T2P2jcl
+)PROC
+  ver (&T2P2jcl,nb,dsname)
+)END

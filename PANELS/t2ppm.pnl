@@ -1,0 +1,29 @@
+)Attr Default(%+_)
+/* + type(text  ) intens(low )                   information only  */
+   _ type( input) intens(high) caps(off) just(left )
+   # type(output) intens(high) caps(off) just(left )
+   + type(text) intens(low) skip(on)
+   $ type( input) intens(non) caps(off) just(left )
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(blue) hilite(reverse)
+   @ type(text) intens(high) color(blue)
+)Body Expand(\\)
+%-\-\- ~TXT2PDF E-Mail Prompt% -\-\-
+%Command ===>_zcmd
++
++ @To Address   : _t2pto                                                       +
++ @From Address : _t2pfrom                                                     +
++ @Subject      : _t2psubj                                                     +
++ @Attach Name  : _t2patt                                                      +
++ @Short Message: _t2pmsg                                                      +
++
++  It is important the you specify your real e-mail address in the from field
++  in case the to address is incorrect causing the mail to bounce or the
++  recipient tries to reply to this e-mail.
+)Init
+ .cursor = t2pto
+)Proc
+ ver (&t2pto,nb)
+ ver (&t2pfrom,nb)
+ ver (&t2psubj,nb)
+)End

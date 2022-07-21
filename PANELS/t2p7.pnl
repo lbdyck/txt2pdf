@@ -1,0 +1,136 @@
+)Attr Default(%+_)
+/* + type(text  ) intens(low )                   information only  */
+   _ type( input) intens(high) caps(off) just(left )
+   + type(text) intens(low) skip(on)
+   $ type( input) intens(high) caps(on ) just(left ) pad(_)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(blue) hilite(reverse)
+   # type(output) intens(high) color(blue) hilite(reverse) caps(off)
+   @ type(text) intens(high) color(blue)
+   ² type(output) intens(non)  color(TURQ) hilite(reverse) caps(off)
+   ³ type(text)   intens(non)  color(TURQ)                 caps(off)
+)Body Expand(\\)
+%-\-\- ~Text-to-PDF - Page/Paper% -\-\-
+%Command ===>_zcmd
++
+  @Lines Per Inch: _mlpi+   Number of Lines of Text per Inch
+  @Margins:   Top:$mtmd  +Bottom$mbmd  +Left$mlmd  +Right$mrmd  +²LNG          +
+             ³Top:²mtm   ³Bottom²mbm   ³Left²mlm   ³Right²mrm   +²ORG          +
+
+  @Paper Orientation: _morient   +Landscape or Portrait
+  @Page Mode  :       _ppm       +Full(F), None(N), Outline(O), Thumbs(T)
+  @Page Layout:       _ppl       +SinglePage(SP), OneColumn(OC),
++                                  TwoColumnLeft(TCL), TwoColumnRight(TCR)
+
+  @Paper Size : _psize     +Letter (Let), Legal (Leg), A4, or widthXheight (4x6)
+  @Paper Type : _ptype     +BlueBar, Graybar, GreenBar, OrangeBar, WhiteBar,
++                           YellowBar
+  @Paper Style: _pstyle    +Holed
++
+@  Note: Margins and Paper size in units of: #units      +
++
+)Init
+ .cursor = mlpi
+ &mtmd = &mtm
+ &mbmd = &mbm
+ &mlmd = &mlm
+ &mrmd = &mrm
+ &DECPOINT = '.'
+ IF ( &ZDECS = &Z )
+ ELSE
+      &LNG   = 'NLS=&ZDECS (ZDECS)'
+      &ORG   = 'ORG=&DECPOINT'
+      if ( &ZDECS = &DECPOINT )
+        /* set intens to non */
+        .attrchar(²) = 'intens(non) color(pink)' /* ZDECS = . DEBUG */
+        .attrchar(³) = 'intens(non) color(pink)' /* ZDECS = . DEBUG */
+      else
+        .attrchar(²) = 'intens(non)'       /* other ZDECS value NLS */
+        .attrchar(³) = 'intens(non)'       /* other ZDECS value NLS */
+
+      if ( &mtm = &Z )
+      else
+         &v1    = trunc(&mtm,'.')
+         &v2    = .trail
+         if ( &v1 = &Z ) &v1 = '0'
+         if ( &v2 = &Z ) &v2 = '0'
+         &mtmd  = '&v1.&zdecs.&v2'
+      if ( &mbm = &Z )
+      else
+         &v1    = trunc(&mbm,'.')
+         &v2    = .trail
+         if ( &v1 = &Z ) &v1 = '0'
+         if ( &v2 = &Z ) &v2 = '0'
+         &mbmd  = '&v1.&zdecs.&v2'
+      if ( &mlm = &Z )
+      else
+         &v1    = trunc(&mlm,'.')
+         &v2    = .trail
+         if ( &v1 = &Z ) &v1 = '0'
+         if ( &v2 = &Z ) &v2 = '0'
+         &mlmd  = '&v1.&zdecs.&v2'
+      if ( &mrm = &Z )
+      else
+         &v1    = trunc(&mrm,'.')
+         &v2    = .trail
+         if ( &v1 = &Z ) &v1 = '0'
+         if ( &v2 = &Z ) &v2 = '0'
+         &mrmd  = '&v1.&zdecs.&v2'
+
+)Reinit
+ Refresh (*)
+)Proc
+ ver (&mlpi,num)
+ ver (&mtmd,enum)
+ ver (&mbmd,enum)
+ ver (&mlmd,enum)
+ ver (&mrmd,enum)
+
+ IF (.MSG = &Z )
+ ELSE exit
+
+ &mtm  = &mtmd
+ &mbm  = &mbmd
+ &mlm  = &mlmd
+ &mrm  = &mrmd
+ IF ( &ZDECS = &Z )
+ ELSE
+      if ( &mtmd= &Z )
+      else
+         &v1    = trunc(&mtmd,&zdecs)
+         &v2    = .trail
+         if ( &v1 = &Z ) &v1 = '0'
+         if ( &v2 = &Z ) &v2 = '0'
+         &mtm   = '&v1..&v2'
+      if ( &mbmd= &Z )
+      else
+         &v1    = trunc(&mbmd,&zdecs)
+         &v2    = .trail
+         if ( &v1 = &Z ) &v1 = '0'
+         if ( &v2 = &Z ) &v2 = '0'
+         &mbm   = '&v1..&v2'
+      if ( &mlmd= &Z )
+      else
+         &v1    = trunc(&mlmd,&zdecs)
+         &v2    = .trail
+         if ( &v1 = &Z ) &v1 = '0'
+         if ( &v2 = &Z ) &v2 = '0'
+         &mlm   = '&v1..&v2'
+      if ( &mrmd= &Z )
+      else
+         &v1    = trunc(&mrmd,&zdecs)
+         &v2    = .trail
+         if ( &v1 = &Z ) &v1 = '0'
+         if ( &v2 = &Z ) &v2 = '0'
+         &mrm   = '&v1..&v2'
+
+ &morient = trans(trunc(&morient,1) L,Landscape l,Landscape
+                                    P,Portrait  p,Portrait *,*)
+ ver (&morient,list,Landscape,Portrait)
+ &ppm = trans(trunc(&ppm,1) F,Full f,Full
+                            N,None n,None O,Outline o,Outline
+                            T,Thumbs t,Thumbs *,*)
+ ver (&ppm,list,Full,None,Outline,Thumbs)
+ &pstyle = trans(trunc(&pstyle,1) H,Holed h,Holed *,*)
+ ver (&pstyle,list,Holed)
+)End

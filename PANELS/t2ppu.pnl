@@ -1,0 +1,26 @@
+)Attr Default(%+_)
+/* + type(text  ) intens(low )                   information only  */
+   _ type( input) intens(high) caps(off) just(left )
+   # type(output) intens(high) caps(off) just(left )
+   + type(text) intens(low) skip(on)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(blue) hilite(reverse)
+   @ type(text) intens(high) color(blue)
+)Body Expand(\\) window(60,10)
+%-\-\- ~TXT2PDF Output Verification% -\-\-
+%Command ===>_zcmd
++
++ The specified output data set:
++           #output
++ currently exists. Press@PF3+to return an respecify
++ or enter@Y+below and press@Enter+to continue.
++
++ Replace the existing data set: _z  +  Yes
+)Init
+ .cursor = zcmd
+ .zvars = '(t2prep)'
+ &t2prep = &z
+)Proc
+ &t2prep = trans(trunc(&t2prep,1) Y,Yes y,Yes *,*)
+ ver (&t2prep,nb,list,Yes)
+)End

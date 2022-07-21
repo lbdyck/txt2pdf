@@ -1,0 +1,29 @@
+)Attr Default(%+_)
+/* + type(text  ) intens(low )                   information only  */
+   _ type( input) intens(high) caps(off) just(left )
+   + type(text) intens(low) skip(on)
+   $ type( input) intens(high) caps(on ) just(left ) pad(_)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(blue) hilite(reverse)
+   @ type(text) intens(high) color(blue)
+)Body Expand(\\)
+%-\-\- ~Text-to-PDF - Font% -\-\-
+%Command ===>_zcmd
++
+  @Font Size:  _fsize+                Font size in points (72 = 1 inch)
+  @Font Name:  _fname                +See below
+  @Font Zoom:  _fzoom+               +Increase (>100) or Decrease (<100)
++
++ Valid Font Names:
++~Font+        ~Abbrev+   ~Font+         ~Abbrev+  ~Font+              ~Abbrev+
++
++ Times        ~T+        +TimeBold      ~TB+      +TimeBoldItalic     ~TBI+
++ Helvetica    ~H+        +HelveticaBold ~HB+      +HelveticaBoldItalic~HBI+
++ Courier      ~C+        +CourierBold   ~CB+      +CourierBoldItalic  ~CBI+
++ Symbol       ~S+        +ZapfDingbats  ~Z+
+)Init
+ .cursor = fsize
+)Proc
+ ver (&fsize,num)
+ ver (&fzoom,num)
+)End

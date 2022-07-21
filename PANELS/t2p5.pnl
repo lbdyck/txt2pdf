@@ -1,0 +1,32 @@
+)Attr Default(%+_)
+/* + type(text  ) intens(low )                   information only  */
+   _ type( input) intens(high) caps(off) just(left )
+   + type(text) intens(low) skip(on)
+   $ type( input) intens(high) caps(on ) just(left ) pad(_)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(blue) hilite(reverse)
+   @ type(text) intens(high) color(blue)
+)Body Expand(\\)
+%-\-\- ~Text-to-PDF - Miscellaneous% -\-\-
+%Command ===>_zcmd
++
+ @Carriage Control  : _mcc+       Yes or No (or blank to use DCB RECFM)
+ @Compression Level : _z+         0 (none) to 9 (max)
+ @Message Level     : _mconf   +  Yes (Normal) No (Quiet) Verbose (Lots)
+ @Maximum File Size : _maxosize  +Maximum output file size (bytes) *
+ @Output LRECL Max  : _morec     +Maximum output record size *
++
++     * null or 0 is unlimited
++
+)Init
+ .cursor = mcc
+ .zvars = '(mcp)'
+)Proc
+ &mcc = trans(trunc(&mcc,1) Y,Yes y,Yes N,No n,No *,*)
+ ver (&mcc,list,Yes,No)
+ ver (&mcp,range,0,9)
+ &mconf = trans(trunc(&mconf,1) Y,Yes y,Yes N,No n,No V,Verbose v,Verbose *,*)
+ ver (&mconf,list,Yes,No,Verbose)
+ ver (&maxosize,num)
+ ver (&maxorec,num)
+)End

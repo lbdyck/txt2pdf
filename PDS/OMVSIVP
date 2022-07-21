@@ -1,0 +1,92 @@
+/* Rexx */ signal on novalue;  /*
+   IVP for txt2pds under OMVS.
+
+   Actually, more a POC than an IVP.
+
+   Install this EXEC in the EXEC directory created by RECEIVE.
+
+   Execute it with 'EX' in the DSLIST member prefix area.
+
+   It will create IVPDIR, populate it with txt2pdf, and
+   run a trivial test.  Then you can fetch IVPDIR/ivp.out.pdf
+   in BINARY and render it.
+*/
+parse source . . . . LIB .
+if right(LIB,5)<>'.EXEC' then do
+    say 'Not EXecuted from installed hierarchy.'
+    LIB = sysvar( 'syspref' )'.TXT2PDF.NEW.EXEC'
+    end
+
+Prefix = left( LIB, length( LIB) - 4 )
+
+/* Data sets and paths -- adjust to taste.
+*/
+trace R
+LOAD = Prefix'LOAD'
+EXEC = Prefix'EXEC'
+IVPDIR = './txt2pdf.ivp/.'
+trace C
+
+say
+say 'Output from shell'
+
+Unix_cmd = 'set -x;' ,                /* Trace.                         */
+    'umask 022;' ,                    /* Make artifacts world-readable. */
+    'mkdir -p' IVPDIR '&&' ,          /* Create directory               */
+    'cd'       IVPDIR '|| exit $?;' ,
+    '/bin/cp' ,                       /*     populate directory.        */
+        '"//'''EXEC'(TXT2PDF)''" ./txt2pdf || exit $?;' ,
+    'chmod a+x ./txt2pdf;' ,          /* Make txt2pdf executable        */
+    '/bin/pwd; ls -al .;' ,           /* A couple test commands.        */
+    'echo Hello | STEPLIB='LOAD ,
+        './txt2pdf >ivp.out.pdf;' ,   /* Run a trivial conversion.      */
+    'exit $?;' ,
+
+RC = syscalls( 'ON' )
+address 'SYSCALL'
+
+'open /dev/null' O_RDWR  /* Ensure stdin valid.  */
+DevNull = RETVAL
+'pipe P.'    /* to pipe output of shell back to Rexx.  */
+
+Env.1 = 'PATH=/bin'
+Env.2 = 'STEPLIB=NONE'     /* For performance.   */
+Env.0 = 2
+
+/* File descriptors for shell command.  */
+Map.0 = 0     /* stdin */
+Map.1 = P.2   /* stdout piped back to Rexx.  */
+Map.2 = P.2   /* stderr merged with stdout.  */
+MapNo = 3
+
+/* Arguments for shell command. */
+Arg.1 = 'sh'  /* Who are we?  Doesn't really matter.  */
+Arg.2 = '-c'  /* Script will be supplied as Arg.3     */
+Arg.3 = Unix_cmd
+Arg.0 = 3
+
+/* Start the shell.  */
+'spawn /bin/sh' MapNo 'Map. Arg. Env.'
+'close (P.2)'  /* Gotta plug the leaky pipe.  */
+'close' DevNull  /* Prevent FD leak.          */
+
+Buf = ''  /* Output from shell command catenated to Buf.  */
+say
+trace Err
+do FN = 1                  /* Separate at NULs and list.  */
+    do Readloop = 1 until B==''
+        parse value Buf with L.FN '15'x +0 T1 +1 Buf
+        if T1<>'' then do
+            say right( FN, 4 )':' L.FN
+            iterate FN;  end
+        Buf = L.FN
+        'read (P.1) B 99'
+        Buf = Buf || B
+    end ReadLoop
+    'close' P.1  /* Prevent FD leak.          */
+    leave FN
+end FN
+if Buf<>'' then say '        Incomplete line:' Buf
+
+'waitpid' RETVAL 'stat. 0'  /* Make sure child is finished.  */
+exit RC

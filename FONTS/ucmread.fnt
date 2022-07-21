@@ -1,0 +1,6 @@
+These are some sample UCM files that can be used for encoding
+PDFs in other than Adobe WinAnsiEncoding.  The full store of
+UCMs can be found at:
+
+http://source.icu-project.org/repos/icu/data/trunk/charset/data/ucm/
+

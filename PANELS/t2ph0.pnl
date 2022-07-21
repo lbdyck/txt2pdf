@@ -1,0 +1,27 @@
+)attr default(%+_)
+` type(text) intens(high) caps(off) just(asis ) color(turq)
++ type(text) intens(high) caps(off) just(asis ) color(turq)
+~ type(text) intens(high) caps(off) just(asis ) color(turq) hilite(reverse)
+# type(text) intens(high) caps(off) just(asis ) color(turq)
+% type(text) intens(high) color(red)
+)Body Expand(\\)
+%-\-\- ~TXT2PDF Tutorial%-\-\-
+%Selection ===>_ZCMD                                                           +
+%
+`  This ISPF Dialog provides a simple interface to the TXT2PDF application.
+`  The TXT2PDF application is a tool that can be used to convert a text file
+`  into an Adobe Acrobat PDF (Portable Doucment Format) file.
+`
+`  The input data set must be a sequential data set or a member of a partitioned
+`  data set. The output will be a sequential data set or a member of a
+`  partitioned data set and will be in PDF format.
+`
+`  The output data set must be transmitted or downloaded in binary to
+`  a workstation capable or running an Adobe Acrobat Reader to view
+`  the converted data.
+`
+`  The panels are mostly self-explanatory and if more inforamtion is required
+`  then a copy of the user guide is avilable.
+`
+)PROC
+)END

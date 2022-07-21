@@ -1,0 +1,35 @@
+Installation instructions for TXT2PDF
+
+Note: If you are going to use this package with the XMITIP package it is
+strongly suggested that you place the TXT2PDF elements into the
+appropriate libraries that are used by XMITIP (including for the IVP
+step). To do this use the RECEIVEX exec in this library.
+
+1. Unzip the provided distribution zip file
+2. Upload the txt2pdf.xmit file into a sequential dataset
+   with RECFM=FB,LRECL=80 using a BINARY transfer
+3. Issue TSO RECEIVE INDS(upload.dsn) to create this installation pds
+4. Read the $DOC Member
+5. Execute the RECEIVE or the RECEIVEX member of the installation PDS
+   to create the Panel and Load libraries
+6. Edit member IVPJOB and run to validate
+   - point to the load library created in step 5
+   - point the rexx library to the installation pds
+   - run the IVPJOB
+   - download the generated PDF files and validate
+7. Copy the Load modules into a library in your Linklist, Steplib, or LPALIB
+   - alternately you can edit members T2P* and submit to reassemble and
+     link the modules from the Assembler library
+8. Copy REXX Program TXT2PDF in this dataset into a library in your SYSEXEC
+   or SYSPROC concatenation.
+9. Copy REXX Program TXT2PDFX in this dataset into a library in your SYSEXEC
+   or SYSPROC concatenation if you desire an external translation table.
+10. If you need to create a national language translation table then take
+    a look at the PDFXLIB exec in the installation pds.
+11. Copy REXX Program TXT2PDFD in this dataset into a library in your SYSEXEC
+   or SYSPROC concatenation if you wish to set a default configuration.
+
+The ISPF Interface will require the following steps:
+1. Copy REXX Program TXT2PDFI in this dataset into a library in your SYSEXEC
+   or SYSPROC concatenation.
+2. Copy the ISPF Panels library into a dataset in your ISPPLIB concatenation

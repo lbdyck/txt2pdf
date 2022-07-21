@@ -1,0 +1,24 @@
+)Attr Default(%+_)
+/* + type(text  ) intens(low )                   information only  */
+   _ type( input) intens(high) caps(off) just(left )
+   # type( input) intens(high) caps(off) just(left ) pad(_)
+   + type(text) intens(low) skip(on)
+   $ type(output) intens(high) caps(on ) just(left ) color(turq)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(blue) hilite(reverse)
+   @ type(text) intens(high) color(blue)
+)Body Expand(\\)
+%-\-\- ~Text-to-PDF - Document Info% -\-\-
+%Command ===>_zcmd
++                                                                              +
+  @Title      :+ #dititle                                                      +
+  @Subject    :+ #disubj                                                       +
+  @Author     :+ #diauthor                                                     +
+  @Keywords   :+ #dikeywd                                                      +
++
++The Document Information file will be create using the generated name:
++   $dinfods
+)Init
+ .cursor = dititle
+)Proc
+)End

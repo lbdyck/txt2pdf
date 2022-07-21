@@ -1,0 +1,29 @@
+)Attr Default(%+_)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(turq) hilite(reverse)
+)Body Expand(\\)
+%-\-\- ~TXT2PDF Execution Selection%-\-\-
+%Select Processing Option:%===>_zcmd
++
+%    B -+Browse the generated job
+%    C -+Copy to a data set
+%    E -+Edit the generated job
+%    J -+Change the JOB Statements
+%    S -+Submit the generated job
+%    X -+eXecute the Command under TSO
++
+%    F -+Generate Batch JCL for FTP
+%    M -+Generate Batch JCL for E-Mail
++
++    data set containing the generated job is:
+%    DSN=&T2PJCL
++
++    During Edit the Job Statements and the TXT2PDF Command may be
++    changed.
+)INIT
+ .cursor = zcmd
+)ReInit
+ &zcmd = &z
+)PROC
+  ver (&zcmd,list,B,C,E,S,J,X,F,M)
+)END

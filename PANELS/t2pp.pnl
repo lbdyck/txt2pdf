@@ -1,0 +1,18 @@
+)Attr Default(%+_)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(turq) hilite(reverse)
+)Body Expand(\\)
+%-\-\- ~TXT2PDF Post-Processing %-\-\-
+%Select Processing Option:%===>_zcmd
++
+%    D -+Download to your PC
+%    F -+FTP the generated PDF File
+%    M -+E-Mail the generated PDF File (via XMITIP)
++
+)INIT
+ .cursor = zcmd
+)ReInit
+ &zcmd = &z
+)PROC
+  ver (&zcmd,list,D,F,M)
+)END

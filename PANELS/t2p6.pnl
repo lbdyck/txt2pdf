@@ -1,0 +1,31 @@
+)Attr Default(%+_)
+/* + type(text  ) intens(low )                   information only  */
+   _ type( input) intens(high) caps(off) just(left )
+   # type( input) intens(high) caps(off) just(left ) pad(_)
+   + type(text) intens(low) skip(on)
+   $ type( input) intens(high) caps(on ) just(left ) pad(_)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(blue) hilite(reverse)
+   @ type(text) intens(high) color(blue)
+)Body Expand(\\)
+%-\-\- ~Text-to-PDF - Outline% -\-\-
+%Command ===>_zcmd
++
+  @Select Outline Scan Type: _ost+  1 (RowCol) 2 (ScanRow) 3 (ScanCol) 4 (Scan)
++
++  Specify the scanning criteria:                Applies to:
++ @Row    : _orow+                               RowCol and ScanRow
++ @Column : _ocol+                               All
++ @Length : _olen+                               All
++ @Text   : #otext                              +ScanRow, ScanCol and Scan
++
+)Init
+ .cursor = ost
+)Proc
+ ver (&ost,nb,range,1,4)
+ ver (&orow,num)
+ ver (&ocol,num)
+ ver (&olen,num)
+ if (&ost NE 1)
+    ver (&otext,nb)
+)End

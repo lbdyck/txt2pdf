@@ -1,0 +1,44 @@
+//IVPJOB  JOB ....
+//TSOBATCH EXEC PGM=IKJEFT01,
+//             PARM='TXT2PDF CONFIG DD:CONFIG'
+//STEPLIB  DD  DSN=hlq.TXT2PDF.NEW.LOAD,
+//             DISP=SHR
+//SYSEXEC  DD  DSN=hlq.TXT2PDF.NEW.EXEC,
+//             DISP=SHR
+//SYSTSPRT DD  SYSOUT=*
+//SYSTSIN  DD  DUMMY
+//REPORT   DD  DUMMY
+//CONFIG   DD  *
+IN dd:report OUT test.pdf
+IFEMPTY blank
+ORIENT port
+LM 1.5 TM 1.5 RM .5 BM .5
+PAPER 8.5x11/GrayBar
+*
+* Load and draw the picturek
+IMAGE load/logo/'hlq.TXT2PDF.PDS(testjpg)'
+IMAGE draw/logo/0/720/80
+*
+* Give us a little watermark
+BG "tmark/bu/black/blue/10/80/  Sample  "
+*
+* Header background
+DRAW rect/72/720/612/792/100//black
+*
+* Header Text
+DRAW "text/115/730/tb/80//blue/red/2/Bevel//150/Acme IT"
+*
+* Sidebar background
+DRAW rect/0/0/72/720/100//ff3333
+*
+* Sidebar text shadow
+DRAW "text/47/63/hi/30///black/2/Bevel/90/200/We Know Mainframes"
+*
+* Sidebar text
+DRAW "text/45/65/hi/30///silver/2/Bevel/90/200/We Know Mainframes"
+*
+* Draw some lines
+DRAW line/72/0/612/720/100/Olive/1
+DRAW line/72/0/612/720/100/yellow/4//2/10
+DRAW line/72/720/612/0/100/green/3/Round/0/6
+/*

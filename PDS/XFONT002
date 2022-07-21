@@ -1,0 +1,55 @@
+% External font descriptor for the Courier New font that implements the
+% ISO-8859-9 (Latin5) code page.
+%
+% You'll probably need to use XLATE004 or XLATE005 for proper
+% translation.
+%
+% You may remove these comments (lines with % at start) if desired.
+%
+<<
+  /Type /Font
+  /Subtype /TrueType
+  /FontDescriptor
+  <<
+    /Type /FontDescriptor
+    /FontName /CourierNew
+    /Flags 34
+    /FontBBox
+    [
+      -21 -680 638 1021
+    ]
+    /MissingWidth 600
+    /StemV 42
+    /ItalicAngle 0
+    /CapHeight 578
+    /XHeight 421
+    /Ascent 832
+    /Descent -300
+  >>
+  /BaseFont /CourierNew
+  /FirstChar 0
+  /LastChar 0
+  /Widths [ 600 ]
+  /Encoding
+  <<
+    /Type /Encoding
+    /BaseEncoding /WinAnsiEncoding
+    /Differences
+    [
+      127
+        /.notdef /.notdef /.notdef
+      141
+        /.notdef /.notdef /.notdef /.notdef
+      157
+        /.notdef /.notdef
+      208
+        /Gbreve
+      221
+        /Idotaccent /Scedilla
+      240
+        /gbreve
+      253
+      /dotlessi /scedilla
+    ]
+  >>
+>>

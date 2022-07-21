@@ -1,0 +1,30 @@
+)Attr Default(%+_)
+/* + type(text  ) intens(low )                   information only  */
+   _ type( input) intens(high) caps(off) just(left )
+   # type( input) intens(high) caps(off) just(left ) pad(_)
+   + type(text) intens(low) skip(on)
+   $ type( input) intens(high) caps(on ) just(left ) pad(_)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(blue) hilite(reverse)
+   @ type(text) intens(high) color(blue)
+)Body Expand(\\)
+%-\-\- ~Text-to-PDF - Color% -\-\-
+%Command ===>_zcmd
++
+  @Foreground color: _cf             +
+  @Background color: _cb             +
++
++ Valid Color specifications are:
++
++~Color+    ~Abbrev+ ~Color+   ~Abbrev+  ~Color+   ~Abbrev+  ~Color+   ~Abbrev+
++ Aqua      ~A+      +Gray     ~Gra+     +Navy     ~N+       +Silver   ~S+
++ Black     ~Bla+    +Green    ~Gre+     +Olive    ~O+       +Teal     ~T+
++ Blue      ~Blu+    +Lime     ~L+       +Purple   ~P+       +White    ~W+
++ Fuchsia   ~F+      +Maroon   ~M+       +Red      ~R+       +Yellow   ~Y+
++
++ Additional Background colors include:
++~BlueBar+~GrayBar+~GreenBar+~OrangeBar+~WhiteBar+~YellowBar+
+)Init
+ .cursor = cf
+)Proc
+)End

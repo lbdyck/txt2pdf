@@ -1,0 +1,33 @@
+)Attr Default(%+_)
+/* + type(text  ) intens(low )                   information only  */
+   _ type( input) intens(high) caps(off) just(left )
+   # type( input) intens(high) caps(off) just(left ) pad(_)
+   + type(text) intens(low) skip(on)
+   $ type( input) intens(high) caps(on ) just(left ) pad(_)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(blue) hilite(reverse)
+   @ type(text) intens(high) color(blue)
+)Body Expand(\\)
+%-\-\- ~Text-to-PDF - Encryption% -\-\-
+%Command ===>_zcmd
++
+@ Owner Password   :+_eowner                   +
+@ User Password    :+_euser                    +
+@ Encryption Length:+_elen+        40 or 128 bit encryption
++
++ Optional Protections
++
+   $z+No Print     $z+No Edit     $z+No Copy      $z+No Edit Notes
+   $z+No Save As   $z+No Fill/Sign$z+No Insert/Rot$z+No HiRes Print
++
+@Note: 128-bit encryption will only work with Adobe Acrobat 5.0 and newer
++
+)Init
+ .cursor = eowner
+ .zvars = '(enp ene enc enen ensa enfs enas enhp)'
+)Proc
+ if (&elen = &z)
+     &elen = 40
+ ver (&elen,nb,list,40,128)
+)End
+)Init

@@ -1,0 +1,1478 @@
+Usage:
+
+    The only required parameters are IN and OUT.
+
+    All parameters consist of a keyword followed by its argument.
+    If the argument contains blanks, you must enclose the whole
+    argument in double (") quotes.
+
+    Aside from those where it makes sense, no arguments are case
+    sensitive.  Filespecs and text values are notable exceptions.
+
+    Some arguments accept multiple options and this is indicated
+    using an elipse (...) in the parameter descriptions.
+
+    Most numeric arguments can be specified with any number of
+    decimal places.  Others like the column and row values must be
+    specified as whole numbers.  This is not indicated below, so use
+    common sense.  :-)
+
+    Several parameters accept a filespec or colorspec.  These are
+    described here:
+
+    << FILESPEC >>
+
+        Filespec syntax is determined by the system on which TXT2PDF
+        is executing.  With the exception of TSO, TXT2PDF simply
+        passes the spec to the system specific I/O routine.
+
+        Under TSO, you may specify a partially or fully qualified
+        dataset name.  A preallocated DD name may be specified by
+        passing "DD:<name>" where "<name>" is the actual DD name.
+
+    << COLORSPEC >>
+
+        All colors can be specified using either the following
+        names or you may specify the exact RGB values by using 6
+        hexadecimal digits formatted as RRGGBB.
+
+            Aqua     A     Black    Bla   Blue     Blu   Fuchsia  F
+            Gray     Gra   Green    Gre   Lime     L     Maroon   M
+            Navy     N     Olive    O     Purple   P     Red      R
+            Silver   S     Teal     T     White    W     Yellow   Y
+
+        Though intended for use with the barred paper style, the
+        following colors may also be used:
+
+            BlueBar        GrayBar        GreenBar
+            OrangeBar      WhiteBar       YellowBar
+
+Parameters:
+
+    IN:
+      <filespec>            Name of input file.
+
+                            DEFAULT: none
+
+    OUT:
+      <filespec>            Name of output file
+
+                            DEFAULT: none
+
+    ANNOT:
+     <type>                 Annotations are used to convey some sort
+                            of information to the user.  Currently
+                            defined types are:
+
+                            Text T - Good old "sticky note"
+
+                            DEFAULT: none
+
+     TEXT:
+      <page>                Specifies the page(s) upon which the
+                            sticky note should be placed.  Defined
+                            values are:
+
+                            First F - Only on first page
+                            Last  L - Only on last page
+                            All   A - On all pages
+
+                            DEFAULT: All
+
+      <row>                 The row where the sticky note will be
+                            placed.
+
+                            DEFAULT: 1
+
+      <col>                 The column where the sticky note will be
+                            placed.
+
+                            This is only an approximation since
+                            TXT2PDF doesn't have access to the font
+                            metrics.  Therefore, it assumes a fixed
+                            pitch, 600dpi font for calculating the
+                            column location.
+
+                            DEFAULT: 1
+
+      <state>               The initial display state of the sticky
+                            note.  Defined values are:
+
+                            Open   O - Sticky note is open
+                            Closed C - Sticky note is closed
+
+                            DEFAULT: Closed
+
+      <text>                The text of the sticky note.
+
+                            DEFAULT: none
+
+    BG:
+      <type>                A background will be drawn before the
+                            text of the document and you may specify
+                            as many backgrounds as you like.  They
+                            will be placed in the order you specify.
+
+                            Currently defined types are:
+
+                            Stream   - PDF stream content
+                            Textmark - Simulated "watermark"
+
+                            DEFAULT: none
+
+      STREAM:
+        <filespec>          Name of file whose contents will be
+                            embedded into a PDF XObject object.
+                            This file can contain any PDF content
+                            that is valid between the "stream" and
+                            "endsream" keywords.  The graphic state
+                            will be saved before the content and
+                            restored after.
+
+                            The stream content may use any of the
+                            fonts supported by TXT2PDF.  Just use
+                            the abbreviated name, e.g., CB for
+                            Courier-Bold.
+
+                            DEFAULT: none
+
+      TEXTMARK:
+      TMARK:
+        <style>             A TEXTMARK is similar to a watermark.
+                            The text will be drawn according to the
+                            following styles:
+
+                            TopDown  BU - upper left to bottom right
+                            BottomUp TD - bottom left to upper right
+
+                            DEFAULT: BottomUp
+
+        <stroke colorspec>  The text will be drawn with this color
+                            in an outline fashion.  If you do not
+                            specify the fill colorspec, then the
+                            text will appear hollow.
+
+                            DEFAULT: none
+
+        <fill colorspec>    Specifying a fill color will cause the
+                            text to appear solid.  If you specify a
+                            color different from the stroke color
+                            you will get solid, outlined text.
+
+                            DEFAULT: Gray (only if neither color
+                                          is specified)
+
+        <opacity percent>   Specifies the opaqueness of the test.
+                            A value of 100 produces solid text and
+                            a value of 0 produces transparent text.
+
+                            DEFAULT: 100
+
+        <font name>         Font defined via XFONT parameter or one of
+                            the following builtin PDF font names:
+
+                            Times               T
+                            TimesBold           TB
+                            TimesItalic         TI
+                            TimesBoldItalic     TBI
+                            Helvetica           H
+                            HelveticaBold       HB
+                            HelveticaItalic     HI
+                            HelveticaBoldItalic HBI
+                            Courier             C
+                            CourierBold         CB
+                            CourierItalic       CI
+                            CourierBoldItalic   CBI
+                            Symbol              S
+                            ZapfDingbats        Z
+
+                            DEFAULT: Courier
+
+        <font size>         (TMARK ONLY) Set the size of the font
+                            in points.
+
+                            DEFAULT: 100
+
+        <text>              The text to draw.  A blank character is
+                            added to each end of the text to keep
+                            the tops and bottoms of the characters
+                            from being clipped.  This happens due
+                            to the rotation of the text.
+
+                            DEFAULT: none
+
+    BM:
+      <bottom margin>       Offset in inches from bottom of page
+                            where the text will end.
+
+                            DEFAULT: 0.5"
+
+    BROWSE:
+     <browse messages>      If running under ISPF, you may view any
+                            messages issued by the program in a
+                            Browse session.  In other environments,
+                            the messages are simply typed to the
+                            screen.  Valid values are:
+
+                            Yes Y - Browse messages
+                            No  N - Don't browse
+
+                            DEFAULT: No
+
+    CC:
+      <carriage control>    Indicates if input file contains machine,
+                            ASA, or ASCII carriage control characters.
+                            Valid values are:
+
+                            Yes   Y - First column contains machine or
+                                      ASA CC characters
+                            No    N - No (or ignore) CC characters
+                            Ascii A - File contains ASCII CC characters
+
+                            DEFAULT: No
+
+    COLOR:
+      <fore colorspec>      Foreground (text) color.
+
+                            DEFAULT: Black
+
+      <back colorspec>      Background (page) color.
+
+                            DEFAULT: White
+
+    COMPRESS:
+      <level>               The level of compression desired.  Specify
+                            0 to turn compression off or 1 through 9
+                            for fastest to best compression.
+
+                            DEFAULT: 0
+
+    CONFIG:
+      <filespec>            Name of file containing additional
+                            parameters.  Everything in this file
+                            will be processed as if it had been
+                            included as arguments immediately
+                            following the CONFIG argument.  Any
+                            arguments specified on the command line
+                            after the CONFIG argument will override
+                            those from the CONFIG file.
+
+                            Full line comments are supported by
+                            placing an asterisk in column 1.
+
+                            To continue a line in the CONFIG file,
+                            add a space followed by a hyphen to the
+                            end of the line being continued.  Here's
+                            an example:
+
+                            line 1 contents that are cont -
+                            inued on another line
+
+                            DEFAULT: none
+
+    CONFIRM:
+     <level>                Sets level of verbosity for message
+                            display.  Valid values are:
+
+                            Yes     Y - Issue standard messages
+                            No      N - Be quiet
+                            Verbose V - More messages
+
+                            DEFAULT: Yes
+
+    DEFCFG:
+     <def. cfg filespec>    Name of a default config file as used by
+                            the CONFIG parameter.  This only sets the
+                            default name.
+
+                            If a value is set and no command line
+                            parameters are specifed, the file will be
+                            treated as if it had been specified using
+                            the CONFIG parameter.
+
+                            You would usually use this in your local
+                            TXT2PDFD EXEC if you want this ability.
+
+                            DEFAULT: none
+
+    DELIM:
+     <character>            Allows you to change the delimiter used
+                            between arguments.
+
+                            DEFAULT: / (slash)
+
+    DINFO:
+     <doc. info filespec>   Name of file whose contents include
+                            lines with a one name and value pair per
+                            line.  The pairs will be added to the
+                            Document Information dictionary within
+                            the PDF file.  You may include any name,
+                            but the standard PDF names directly
+                            supported by TXT2PDF are:
+
+                            Title    - The document's title
+                            Subject  - The subject of the document
+                            Author   - Who created the document
+                            Keywords - Associated keywords
+
+                            DEFAULT: none
+
+    DRAW:
+      <type>                The type of object to draw.
+
+                            Currently defined types are:
+
+                            Line   - Line
+                            Rect   - Rectangle
+                            Text   - Text
+                            String - String
+
+                            DEFAULT: none
+
+                            NOTE:  To provide the most flexibility, all
+                                   coordinates and sizes are specified
+                                   in user space units which are 1/72 of
+                                   an inch.
+
+                                   The origin is the lower left corner
+                                   of the page and margins are ignored.
+
+      LINE:
+        <start x>           The lower left x-axis cooridinate.
+
+                            DEFAULT: none
+
+        <start y>           The lower left y-axis cooridinate.
+
+                            DEFAULT: none
+
+        <end x>             The upper right x-axis cooridinate.
+
+                            DEFAULT: none
+
+        <end y>             The upper right y-axis cooridinate.
+
+                            DEFAULT: none
+
+        <opacity percent>   Specifies the opaqueness of the line.
+                            A value of 100 produces an opaque line and
+                            a value of 0 produces a transparent line.
+
+                            DEFAULT: 100
+
+        <colorspec>         The line will be drawn with this color.
+
+                            DEFAULT: Black
+
+        <thickness>         The thickness of the line.  Note that 0 is
+                            a valid thickness and produces (in Acrobat
+                            anyway) a very thin line.
+
+                            DEFAULT: 0
+
+        <cap style>         The type of endcaps that will be placed at
+                            the beginning and end of the line.
+
+                            The following types are available:
+
+                            BUTT   - Square, no projection past end
+                            ROUND  - Round, projection past end
+                            SQUARE - Square, projection past end
+
+                            DEFAULT: BUTT
+
+        <dot on>            These 2 values work together to create lines
+        <dot off>           with different dash patterns.  Used with the
+                            ROUND cap style, you can also achieve dotted
+                            lines.
+
+                            The "dot on" value specifies the number of
+                            units dashes within the pattern will be.  If
+                            you do not specify "dot on", then a value of
+                            0 will be used.
+
+                            The "dot off" value specifies the number of
+                            units the gap between dashes will be.  If
+                            you do not specify a "dot off" value, it
+                            will default to the "dot on" value.  This
+                            produces an even "dash/gap" pattern.
+
+                            If neither value is specifed, a solid line
+                            will be produced.
+
+                            DEFAULT: none (solid line)
+
+      RECT:
+        <x>                 The lower left x-axis cooridinate.
+
+                            DEFAULT: none
+
+        <y>                 The lower left y-axis cooridinate.
+
+                            DEFAULT: none
+
+        <width>             The width of the rectangle.
+
+                            DEFAULT: none
+
+        <height>            The height of the rectangle.
+
+                            DEFAULT: none
+
+        <opacity percent>   Specifies the opaqueness of the rectangle.
+                            A value of 100 produces an opaque line and
+                            a value of 0 produces a transparent line.
+
+                            DEFAULT: 100
+
+        <stroke colorspec>  The rectangle will be drawn with this color
+                            in an outline fashion.  If you do not
+                            specify the fill colorspec, then the
+                            rectangle will appear hollow.
+
+                            DEFAULT: Black
+
+        <fill colorspec>    Specifying a fill color will cause the
+                            rectangle to appear solid.  If you specify a
+                            color different from the stroke color
+                            you will get a solid, outlined rectangle.
+
+                            DEFAULT: none
+
+        <thickness>         The thickness of the line surrounding the
+                            rectangle.
+
+                            DEFAULT: 0
+
+        <join style>        The shape used for the corners of the
+                            rectangle.
+
+                            The following types are available:
+
+                            MITER  - Pointed
+                            ROUND  - Rounded
+                            BEVEL  - Chopped
+
+                            DEFAULT: MITER
+
+        <dot on>            These 2 values work together to create lines
+        <dot off>           with different dash patterns.
+
+                            The "dot on" value specifies the number of
+                            units dashes within the pattern will be.  If
+                            you do not specify "dot on", then a value of
+                            0 will be used.
+
+                            The "dot off" value specifies the number of
+                            units the gap between dashes will be.  If
+                            you do not specify a "dot off" value, it
+                            will default to the "dot on" value.  This
+                            produces an even "dash/gap" pattern.
+
+                            If neither value is specifed, a solid line
+                            will be produced.
+
+                            DEFAULT: none (solid line)
+
+      TEXT:
+      STRING:
+        <x>                 The lower left x-axis cooridinate.
+
+                            DEFAULT: none
+
+        <y>                 The lower left y-axis cooridinate.
+
+                            DEFAULT: none
+
+        <font name>         Font defined via XFONT parameter or one of
+                            the following builtin PDF font names:
+
+                            Times               T
+                            TimesBold           TB
+                            TimesItalic         TI
+                            TimesBoldItalic     TBI
+                            Helvetica           H
+                            HelveticaBold       HB
+                            HelveticaItalic     HI
+                            HelveticaBoldItalic HBI
+                            Courier             C
+                            CourierBold         CB
+                            CourierItalic       CI
+                            CourierBoldItalic   CBI
+                            Symbol              S
+                            ZapfDingbats        Z
+
+                            DEFAULT: Courier
+
+        <font size>         Set the size of the font in points.
+
+                            DEFAULT: 9
+
+        <opacity percent>   Specifies the opaqueness of the text.  A
+                            value of 100 produces opaque text and
+                            a value of 0 produces transparent text.
+
+                            DEFAULT: 100
+
+        <stroke colorspec>  The text will be drawn with this color in an
+                            outline fashion.  If you do not specify the
+                            fill colorspec, then the text will appear
+                            hollow.
+
+                            DEFAULT: Black
+
+        <fill colorspec>    Specifying a fill color will cause the
+                            text to appear solid.  If you specify a
+                            color different from the stroke color
+                            you will get solid, outlined text.
+
+                            DEFAULT: none
+
+        <thickness>         The thickness of the line surrounding the
+                            text.
+
+                            DEFAULT: 0
+
+        <join style>        The shape used for the corners of the
+                            glyphs.
+
+                            The following types are available:
+
+                            MITER  - Pointed
+                            ROUND  - Rounded
+                            BEVEL  - Chopped
+
+                            DEFAULT: MITER
+
+        <rotation>          Specifies the rotation of the text.  The
+                            value is given in degrees.  Negative values
+                            rotate the image clockwise.
+
+                            DEFAULT: 0
+
+        <zoom>              Zoom factor in percent of original font
+                            size.  Specifying a percentage less than
+                            100 will cause the font to shrink and a
+                            percentage greater than 100 will cause
+                            the font to enlarge.
+
+                            DEFAULT: 100%
+
+        <text>              The text to draw.
+
+                            The value may contain certain format
+                            sequences that get replaced with different
+                            values.  These sequences fall into 2
+                            categories, date/time and dynamic.
+
+                            Date and time sequences can be used in
+                            both TEXT and STRING types.  The date and
+                            time used is that at time of parsing.
+
+                            The sequences start with a percent (%) and
+                            are followed by one of:
+
+                            % - literal percent
+                            a - abbreviated weekday name
+                            A - full weekday name
+                            b - abbreviated month name
+                            B - full month name
+                            c - format: Sun Oct 26 02:00:00 2003
+                            d - 2 digit day of month (zero padded)
+                            e - 2 digit day of month (space padded)
+                            H - 2 digit (24) hour
+                            I - 2 digit (12) hour
+                            j - 3 digit day of year
+                            m - 2 digit month of year
+                            M - 2 digit minute
+                            p - meridian
+                            S - 2 digit second
+                            w - 1 digit day of the week (0=Sunday)
+                            x - date format: 10/26/03
+                            X - time format: 02:00:00
+                            y - 2 digit year
+                            Y - 4 digit year
+
+                            Dynamic sequences can only be used with
+                            the STRING type.  The values for these
+                            sequences change during processing.
+
+                            The sequences start with an at sign (@)
+                            and are followed by one of:
+
+                            @ - literal at sign
+                            p - PDF page number (1 based)
+
+                            DEFAULT: none
+
+    ENCODING:
+                            The ENCODING parameter is used to define a
+                            character set encoding and is an alternative
+                            to using the translation tables.
+
+      <func>                The function to perform.
+
+                            Functions are:
+
+                            Define - Define a new encoding
+
+                            DEFAULT: None
+
+      DEFINE:
+                            Defines an encoding, assigning a name and
+                            filespec.
+
+        <name>              The name to assign to the encoding.
+
+                            DEFAULT: none
+
+        <filespec>          Name of the file containing the UCM format
+                            encoding.
+
+                            DEFAULT: none
+
+    ENCRYPT:
+      <type>                The type of security to use for encryption.
+                            Only the PDF standard security is currently
+                            supported.
+
+                            Currently defined types are:
+
+                            Standard ST - Standard PDF security
+
+                            DEFAULT: Standard
+
+      STANDARD:
+        <Owner password>    The password you wish to use to control
+                            full access to the document.  Having
+                            owner access gives complete control.
+
+                            Per the PDF spec, only the first 32
+                            characters are used.
+
+                            The default is not to assign an owner
+                            password which gives full control to
+                            anyone with user access.
+
+                            DEFAULT: none
+
+        <User password>     This password gives users access to the
+                            document according to permissions you
+                            specify (or let default).
+
+                            Per the PDF spec, only the first 32
+                            characters are used.
+
+                            The default is not to assign a user
+                            password which gives a user almost
+                            all permissions.  It does not allow
+                            to change the security settings if
+                            an owner password has been assigned.
+
+                            DEFAULT: none
+
+        <key length>        The key length controls the level of
+                            encryption desired.  The only supported
+                            levels are:
+
+                            40  - 40-bit (Acrobat v4 and below)
+                            128 - 128-bit (Acrobat v5 and above)
+
+                            DEFAULT: 40
+
+        <permissions/...>   By default, all permissions ara allowed,
+                            You use as many of the following options
+                            separated by the "/" characters as is
+                            needed to remove the indicated permission.
+
+                            The following are currently defined with a
+                            brief description of each.  (The PDF spec
+                            dedicates an entire page describing these,
+                            so this is by far not complete.)
+
+                            NOPRINT       NP  - No printing
+                            NOEDIT        NE  - No editing
+                            NOCOPY        NC  - No copying
+                            NOEDITNOTES   NEN - No editing notes/forms
+                            NOSAVEAS      NSA - Don't allow Save As
+                            NOFILLANDSIGN NFS - No fill/sign forms
+                            NOTACCESSIBLE NAC - Not accessible (BAD!)
+                            NOASSEMBLY    NAS - No insert/rotate/...
+                            NOHIRESPRINT  NHP - No Hires printing
+                            NONE          N   - No permissions
+
+                            DEFAULT: (all permissions)
+
+    FONT:
+      <size>                Size of font in points.  1 point is 1/72
+                            of an inch.
+
+                            DEFAULT: 9
+
+      <name>                Font defined via XFONT parameter or one of
+                            the following builtin PDF font names:
+
+                            Times               T
+                            TimesBold           TB
+                            TimesItalic         TI
+                            TimesBoldItalic     TBI
+                            Helvetica           H
+                            HelveticaBold       HB
+                            HelveticaItalic     HI
+                            HelveticaBoldItalic HBI
+                            Courier             C
+                            CourierBold         CB
+                            CourierItalic       CI
+                            CourierBoldItalic   CBI
+                            Symbol              S
+                            ZapfDingbats        Z
+
+                            DEFAULT: Courier
+
+      <zoom>                Zoom factor in percent of original font
+                            size.  Specifying a percentage less than
+                            100 will cause the font to shrink and a
+                            percentage greater than 100 will cause
+                            the font to enlarge.
+
+                            DEFAULT: 100
+
+    HLQ:
+      <hlq>                 High level qualifier for OS/390+ dataset
+                            names.  It will be prepended to any DSN
+                            not beginning with a single quote (') or
+                            the special "DD:" syntax.
+
+                            Under TSO, the default value will be the
+                            prefix from the current profile.  If one
+                            is not assigned, then the current userid
+                            will be used.  If the current prefix and
+                            userid are both assigned AND they aren't
+                            the same, both will be used separated by
+                            a period.
+
+                            Under IRXJCL, the default value will be
+                            the current userid if available.
+
+                            For all other environments, the default
+                            will be null.
+
+                            DEFAULT: <see above>
+
+    IFEMPTY:
+      <option>              Supports different handling in the event
+                            an empty input file is detected.
+
+                            Specifying "ERROR" will cause a error
+                            level message to be issued.
+
+                            Specifying "BLANK" will issue a warning
+                            message and create a 1 page, blank PDF
+                            file.
+
+                            Specifying anything else will cause a
+                            warning to be issued and a 1 page PDF
+                            with the text you specify as the argument.
+
+                            DEFAULT: ERROR
+
+    IMAGE:
+                            The IMAGE keyword allows you to include
+                            different images on the page.  Currently,
+                            only JPEG and BMP images are supported.
+
+      <func>                The function to perform on an image.
+
+                            Functions are:
+
+                            Load - Load the image and assign a name
+                            Draw - Draw a previously loaded image
+                            Tile - Tile a previously loaded image
+
+                            DEFAULT: none
+
+                            NOTE:  To provide the most flexibility, all
+                                   coordinates and sizes are specified
+                                   in user space units which are 1/72 of
+                                   an inch.
+
+                                   The origin is the lower left corner
+                                   of the page and margins are ignored.
+
+      LOAD:
+                            Loads an image and assigns it a name for
+                            use by the other IMAGE functions.  You may
+                            load as many files as you like.
+
+        <name>              The name to assign to the image.
+
+                            DEFAULT: none
+
+        <filespec>          Name of the file containing the image.
+
+                            DEFAULT: none
+
+      DRAW:
+                            Draws a previously loaded image.  You may
+                            draw an image as many times as is needed
+                            without reloading.
+
+                            NOTE:  The order of operations on the
+                                   image is rotate, scale, and skew.
+
+        <name>              The name assigned with on the LOAD of the
+                            image.
+
+                            DEFAULT: none
+
+        <x>                 The lower left x-axis cooridinate.
+
+                            DEFAULT: none
+
+        <y>                 The lower left y-axis cooridinate.
+
+                            DEFAULT: none
+
+        <opacity percent>   Specifies the opaqueness of the image.  A
+                            value of 100 produces an opaque image and a
+                            value of 0 produces a transparent image.
+
+                            DEFAULT: 100%
+
+        <rotation>          Specifies the rotation of the image.  The
+                            value is given in degrees.  Negative values
+                            rotate the image clockwise.
+
+                            DEFAULT: 0
+
+        <x scale>           Specifies the scaling factor of the images'
+                            x-axis.  The value is a percentage of the
+                            original width of the image.
+
+                            DEFAULT: 100% (original size)
+
+        <y scale>           Specifies the scaling factor of the images'
+                            y-axis.  The value is a percentage of the
+                            original height of the image.
+
+                            DEFAULT: 100% (original size)
+
+        <x skew>            Specifies the skew or slant of the image
+                            along the x-axis.  It is given in degrees.
+
+                            DEFAULT: 0
+
+        <y skew>            Specifies the skew or slant of the image
+                            along the y-axis.  It is given in degrees.
+
+                            DEFAULT: 0
+
+        <start>             Specifies the first page number on which
+                            the image will be drawn.
+
+                            DEFAULT: 1
+
+        <interval>          Specifies the page interval at which the
+                            image will be drawn.
+
+                            Use a value of 0 to draw the image only
+                            on the <start> page and not any others.
+
+                            DEFAULT: 1
+
+      TILE:
+                            Tiles a previously loaded image within
+                            the specified constraints.
+
+        <name>              The name assigned with on the LOAD of the
+                            image.
+
+                            DEFAULT: none
+
+        <x>                 The lower left x-axis cooridinate.
+
+                            DEFAULT: none
+
+        <y>                 The lower left y-axis cooridinate.
+
+                            DEFAULT: none
+
+        <w>                 The width of the constraining box.
+
+                            DEFAULT: none
+
+        <h>                 The height of the constraining box.
+
+                            DEFAULT: none
+
+        <opacity percent>   Specifies the opaqueness of the image.  A
+                            value of 100 produces an opaque image and a
+                            value of 0 produces a transparent image.
+
+                            DEFAULT: 100%
+
+    LM:
+      <left margin>         Offset in inches from left side of page
+                            where the text will start.
+
+                            DEFAULT: 0.5"
+
+    LPI:
+      <lines per inch>      Number of lines per inch.
+
+                            DEFAULT: 8
+
+    MAG:
+     <level>                Sets the initial magnification level.
+
+                            You may specify a percentage or one of
+                            the following values:
+
+                            FitInWindow FI - Fit entirely in window
+                            FitWidth    FW - Fit to width of page
+                            FitVisible  FV - Fit to contents of page
+
+                            DEFAULT: none
+
+    MAXOSIZE:
+      <max output size>     Allows setting a limit on the size of the
+                            generated PDF.  If the size is greater than
+                            the value specified, an error is issued.
+
+                            Setting the value to 0 will disable this
+                            feature.
+
+                            DEFAULT: 0
+
+    MSGID:
+     <prefix messages>      Enables/disables prefixing of all
+                            messages with program name.  Valid
+                            values are:
+
+                            Yes Y - Prefix each message
+                            No  N - Don't prefix the messages
+
+                            DEFAULT: Yes
+
+    MSGLVL:
+     <msgnum/level>         Overrides internal level of a message.
+
+                            This allows you to suppress a message by
+                            making the message a lower level than
+                            the current "CONFIRM" value.
+
+                            You may also affect the final return code
+                            by changing an error level message to one
+                            of the other values.
+
+                            Possible values are:
+
+                            Error   E - Error level (produces RC=8)
+                            Info    I - Info level
+                            Verbose V - Verbose level
+
+                            DEFAULT: none
+
+    OLOPT:
+      <opt/...>             Allows setting of options that relate to
+                            all outlining types.
+
+                            Specify as many of the following options
+                            as you like, separated with the "/"
+                            character:
+
+                            Color    C - Primary outline text color
+                                         (Next option must be a valid
+                                          colorspec)
+                            AltColor A - Alternate text color
+                                         (Next option must be a valid
+                                          colorspec)
+                            Italic   I - Italicized text
+                            Bold     B - Boldfaced text
+                            Expand   E - Expanded all levels
+                            Full     F - Display full lineage at each
+                                         level of the hierarchy
+                            Dups     D - Allow duplicate indexes
+                            Show     S - Includes the token as part of
+                                         the index
+
+                            DEFAULT: none
+
+    OLSORT:
+      <direction>           Allows you to sort the outline.  Specify
+                            the direction as follows:
+
+                            A - Ascending sequence
+                            D - Descending sequence
+
+                            DEFAULT: unsorted
+
+    OLTOK:
+      <token>               Specifying an outline token allows you
+                            to generate a multi-level outline.  The
+                            token is one or more characters that will
+                            be used to split the selected outline
+                            text into one or more segments.  Each
+                            segment will becomes a node in the tree.
+
+                            DEFAULT: none
+
+    ORIENT:
+      <orientation>         Orientation of the image on the paper.
+                            Valid values are:
+
+                            Landscape L - Along length of paper
+                            Portrait  P - Along width of paper
+
+                            DEFAULT: PORTRAIT
+
+    OUTLINE:
+      <type>                Outlining allows you to select text from
+                            the document you're converting and use
+                            it to build an outline.  Viewer apps
+                            display the outline as a multi-level
+                            tree.  Selecting the leaf nodes will
+                            reposition the display to the location
+                            that index was found in the document.
+
+                            There are several scan types that you can
+                            use to generate the outline.  They are:
+
+                            RowCol  RC - Text at a specific row/col
+                            ScanRow SR - Scan a specific row
+                            ScanCol SC - Scan a specific column
+                            Scan    S  - Scan entire document
+
+                            The RowCol type is equivalent to the
+                            original indexing scheme that was
+                            specified with the IDX parameter.
+
+                            DEFAULT: none
+
+      ROWCOL:
+        <row>               The row where the text is located or 0
+                            which means any line of the page.
+
+                            DEFAULT: none
+
+        <col>               The column where the text starts.
+
+                            DEFAULT: none
+
+        <len>               The length of the text.
+
+                            DEFAULT: none
+
+      SCANROW:
+        <row>               The row that will be scanned for
+                            a match to the "text" argument.
+
+                            DEFAULT: none
+
+        <data col>          The column where the data starts.  This
+                            may be a specified as an absolute column
+                            within the selected row or as being
+                            relative to the start of the located
+                            text.  You specify a relative location
+                            by prefixing the "data col" argument
+                            with a plus (+) or minus (-) sign.
+
+                            DEFAULT: none
+
+        <data len>          The length of the data.
+
+                            DEFAULT: none
+
+        <text>              The text for which to search.
+
+                            DEFAULT: none
+
+      SCANCOL:
+        <col>               The column that will be scanned for
+                            a match to the "text" argument.
+
+                            DEFAULT: none
+
+        <data col>          The column where the data starts.  While
+                            this may be a relative column location
+                            as described under ScanRow, it doesn't
+                            make much sense the scan column is known
+                            ahead of time.
+
+                            This should really be a "data row"
+                            argument, but the scanning routine does
+                            not have access to all rows at once.
+
+                            DEFAULT: none
+
+        <data len>          The length of the data.
+
+                            DEFAULT: none
+
+        <text>              The text for which to search.
+
+                            DEFAULT: none
+
+      SCAN:
+        <data col>          The column where the data starts.  This
+                            may be a specified as an absolute column
+                            within the selected row or as being
+                            relative to the start of the located
+                            text.  You specify a relative location
+                            by prefixing the "data col" argument
+                            with a plus (+) or minus (-) sign.
+
+                            DEFAULT: none
+
+        <data len>          The length of the data.
+
+                            DEFAULT: none
+
+        <text>              The text for which to search.  Every row
+                            will be scanned for this text.
+
+                            DEFAULT: none
+
+    OUTREC:
+     <len>                  Forces truncation of output records to
+                            the given length.
+
+                            DEFAULT: 999999
+
+    PAGE:
+     <mode>                 Sets the recommended display mode.  This
+                            is only a recommendation as the viewer
+                            application may choose otherwise.
+                            Currently defined values are:
+
+                            None    N - Don't display thumbnails or
+                                        outline
+                            Outline O - Display the document outline
+                            Thumbs  T - Display the document thumbs
+                            Full    F - Full screen mode
+
+                            The defualt setting is to allow the
+                            viewer app to decide the mode.  This is
+                            different than the "None" option since
+                            the "None" option could override what
+                            the user currently has selected.
+
+                            However, if you are creating an outline
+                            then the default will be "Outline".  If
+                            that isn't desired, use this option to
+                            override it.
+
+                            DEFAULT: (let viewer app decide)
+
+     <layout>               Set the recommended display layout.
+                            Currently defined values are:
+
+                            SinglePage     SP  - One page at a time
+                            OneColumn      OC  - Pages in one column
+                            TwoColumnLeft  TCL - Pages in two columns,
+                                                 odd page on left
+                            TwoColumnRight TCR - Pages in two columns,
+                                                 odd page on right
+
+                            DEFAULT: (let viewer app decide)
+
+    PAPER:
+      <size>                Size of the paper to use.  You may
+                            specify the exact width and height in
+                            inches, e.g., 8.5" x 11" or one of the
+                            following values:
+
+                            Letter Let - 8.5"  x 11"
+                            Legal Leg  - 8.5"  x 14"
+                            A4         - 8.27" x 11"
+
+                            DEFAULT: 8.5" x 11"
+
+      <type>                Type or design of paper.  Valid values
+                            are:
+
+                            Bluebar     Graybar    Greenbar
+                            Orangebar   Whitebar   Yellowbar
+
+                            DEFAULT: none
+
+      <style>               Attributes specific to the <type>.
+                            Valid values are:
+
+                            Holed - Simulated holes will be drawn
+                                    at the left and right edges of
+                                    the paper.
+
+                            DEFAULT: none
+
+    RM:
+      <right margin>        Offset in inches from right side of page
+                            where the text will end.
+
+                            DEFAULT: 0.5"
+
+    TEXT:
+      <type>                Allows you to modify the input text in
+                            different ways.
+
+                            So far there's only one type:
+
+                            Attr A - Set text attributes
+
+                            DEFAULT: none
+
+      ATTR:
+        <font name>         Font defined via XFONT parameter or one of
+                            the following builtin PDF font names:
+
+                            Times               T
+                            TimesBold           TB
+                            TimesItalic         TI
+                            TimesBoldItalic     TBI
+                            Helvetica           H
+                            HelveticaBold       HB
+                            HelveticaItalic     HI
+                            HelveticaBoldItalic HBI
+                            Courier             C
+                            CourierBold         CB
+                            CourierItalic       CI
+                            CourierBoldItalic   CBI
+                            Symbol              S
+                            ZapfDingbats        Z
+
+                            DEFAULT: FONT value (or its default)
+
+        <font size>         Set the size of the font in points.
+
+                            DEFAULT: FONT value (or its default)
+
+        <fore colorspec>    Foreground (text) color.
+
+                            DEFAULT: COLOR value (or its default)
+
+        <scan type>         Method used to identify the text to
+                            which these attributes will be applied.
+
+                            Only one type is defined:
+
+                            RowCol  RC - Text at a specific row/col
+                            Scan    S  - Scan entire document
+
+                            DEFAULT: none
+
+        SCAN:
+          <text>            The text for which to search.
+
+        ROWCOL:
+          <row>             The row where the text is located or 0
+                            which means any line of the page.
+
+                            DEFAULT: none
+
+          <col>             The column where the text starts.
+
+                            DEFAULT: none
+
+          <len>             The length of the text.
+
+                            DEFAULT: none
+
+    TM:
+      <top margin>          Offset in inches from top of page where
+                            the text will begin.
+
+                            DEFAULT: 0.5"
+
+    TRANS:
+     <style>                When displaying a document in fullscreen
+                            or slide show modes, a transition effect
+                            may be used when moving from page to
+                            page.  The transition styles that may be
+                            used are:
+
+                            Blinds   BL - (Try me...)
+                            Box      BO - (Try me...)
+                            Dissolve D  - (Try me...)
+                            Glitter  G  - (Try me...)
+                            Replace  R  - (Try me...)
+                            Split    S  - (Try me...)
+                            Wipe     W  - (Try me...)
+
+                            DEFAULT: none
+
+     <dur>                  The duration of the effect in seconds.
+
+                            DEFAULT: 1
+
+     <opts/...>             Allows you to modify the behavior of the
+                            effect.  The options are different for
+                            each effect, but they aren't described
+                            individually.  Just try them...  :-)
+
+                            Specify as many of the following flags
+                            as is appropriate for the transition
+                            style:
+
+                            Horizontal      H   - Split / Blinds
+                            Vertical        V   - Split / Blinds
+                            Inward          I   - Split / Box
+                            Outward         O   - Split / Box
+                            L2R             0   - Wipe / Glitter
+                                                  (Left to right)
+                            B2T             90  - Wipe
+                                                  (Bottom to top)
+                            R2L             180 - Wipe
+                                                  (Right to left)
+                            T2B             270 - Wipe / Glitter
+                                                  (Top to bottom)
+                            TL2BR           315 - Glitter
+                                                  (Top left to
+                                                   bottom right)
+
+                            DEFAULT: none
+
+    UNITS:
+     <unit of measure>      Allows you to specify certain parameters
+                            using centimeters or inches.  The values
+                            affected by this are the paper size and
+                            margins.  You may specify:
+
+                            Inches      I
+                            Centimeters C
+
+                            DEFAULT: INCHES
+
+    VIEWER:
+     <flag/...>             Allows you to specify how the viewer
+                            should behave when displaying the file.
+                            Again, these are only recommendations
+                            and the viewer may simply ignore them.
+
+                            Specify as many of the following flags
+                            as you like, separated with the "/"
+                            character:
+
+                            CenterWindow    CW - Center window on
+                                                 screen
+                            DisplayDocTitle DD - Document title in
+                                                 title bar instead of
+                                                 filename
+                            FitWindow       FW - Resize window to
+                                                 first page size
+                            HideMenuBar     HM - Hide the menu bar
+                            HideToolBar     HT - Hide the title bar
+                            HideWindowUI    HW - Hide all UI elements
+                            NonFullScreen   NF - Page mode after exiting
+                                                 full screen.  Following
+                                                 option must be one of:
+                                                 None     N
+                                                 Outlines O
+                                                 Thumbs   T
+
+                            DEFAULT: none
+
+    VONLY:
+     <validate only>        Allows validation of parameters without
+                            performing the conversion.  If specified,
+                            the VONLY parameter should precede all
+                            others.
+
+                            Yes Y - Prefix each message
+                            No  N - Don't prefix the messages
+
+                            DEFAULT: No
+
+    XFONT:
+      <type>                Allows you to use fonts other than the
+                            14 standard Adobe fonts.  Please read the
+                            the documentation for this keyword since
+                            its use is fairly complex.
+
+                            Currently supported types are:
+
+                            External E - External font "program"
+                            Internal I - Internal font
+                            TrueType TT - TrueType font
+
+                            DEFAULT: none
+
+      EXTERNAL:
+                            Note that this does not embed the real
+                            font.  It simply allows you to reference
+                            a preinstalled one.
+
+        <name>              The name to give the font so it may be
+                            referenced anywhere font names are allowed.
+
+                            DEFAULT: none
+
+        <filespec>          Name of file whose contents will be
+                            embedded into the PDF file as a font.
+                            This file must contain valid syntax
+                            for a PDF font object.
+
+                            DEFAULT: none
+
+      INTERNAL:
+                            Allows you to control handling of the
+                            14 standard fonts.
+
+        <name>              The name to give the font so it may be
+                            referenced anywhere font names are allowed.
+
+                            DEFAULT: none
+
+        <encoding>          The name of a previously defined encoding
+                            to be associated with this font name.
+
+                            DEFAULT: none
+
+        <fontspec>          The name of the builtin font to associate
+                            with this name.
+
+                            DEFAULT: none
+
+      TRUETYPE:
+                            !!!IMPORTANT!!!
+
+                            Many TrueType fonts are copyrighted and
+                            may not be legally embedded, so make sure
+                            you do your homework.
+
+                            On z/VM and z/OS, the fonts can reside in
+                            variable or fixed record data sets of any
+                            record length and may reside in a PDS.
+
+        <name>              The name to give the font so it may be
+                            referenced anywhere font names are allowed.
+
+                            DEFAULT: none
+
+        <encoding>          The name of a previously defined encoding
+                            to be associated with this font name.
+
+                            DEFAULT: WinAnsiEncoding
+
+        <flag>              Allows control how fonts are embedded.  The
+                            default is to embed and subset fonts:  You
+                            may specify:
+
+                            NoSubset    NS
+                            NoEmbed     NE
+
+        <filespec>          Name of the TrueType file.
+
+                            DEFAULT: none
+
+    XLATE:
+     <execname>             Allows you to specify a translation table
+                            EXEC name other than the default TXT2PDFX.
+                            (You may have input text in different
+                            codepages.)
+
+                            The execname specifies a standard REXX
+                            EXEC that you can model after TXT2PDFX or
+                            one of the XLATEnnn samples.
+
+                            DEFAULT: none
+

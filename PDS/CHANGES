@@ -1,0 +1,330 @@
+History:
+
+    12/02/09 - LBD - Updates from Mario Robitaille to resolve an
+    (09.336)         issue when using Draw_String
+
+    05/27/09 - PG  - Updates from Paul Gilmartin to correctly work under
+                     OMVS.
+                   - Add member OMVSIVP for verification under OMVS
+
+
+    04/20/09 - LBD - The Truetype fonts are included in the font pds:
+                         VERAMOBD
+                         VERAMOBI
+                         VERAMOIT
+                         VERAMONO
+
+    04/17/09 - LLL - Added TrueType font embedding and subsetting.  The
+                       XFONT keyword was updated to specify the fonts.
+                     Added the DELIM keyword to allow using characters
+                       other the "/" as the parameter separator.
+                     Added the ENCODING keyword to provide support for
+                       Unicode.
+                     Added new font name parameter to the TMARK type
+                       of the BG keyword.
+                     Added ROWCOL subtype to the ATTR type of the TEXT
+                       keyword.
+                     Object lengths are no longer forward references to
+                       separate objects, somewhat reducing PDF size.
+                     Fixed control character initialization so that it
+                       they are translated properly.
+                     Made sure all SELECTs had an OTHERWISE to make the
+                       REXX compiler happier.
+                     More minor cleanup.
+
+    11/31/08 - LLL - Changed license to GPLv2 from QPL.  There were
+                     companies wanting to distribute TXT2PDF with their
+                     product and the QPL was too restrictive.
+
+                     Even though the GPL allows it, I hope the companies
+                     do not try to make money off of TXT2PDF since I
+                     was kind enough to make it easier to redistribute.
+                     May a pox be on them if they do.  :-)
+
+    11/06/08 - LLL - Added support for ooRexx (based on Lionel's code)
+                     Limit parameter precision in image positioning
+                       since Acrobat Reader 9 can't deal with more than
+                       20 digits to the right of the decimal.
+                     Fixed Regina/Uni-rexx stdin/stdout handling.
+                     Converted message table to stem for easier
+                       compiling. (Joe Smidel)
+                     Conversion table usage was reversed.
+                     Added COMPRESS to TXT2PDFD.
+                     Minor cosmetic clean up here and there.
+
+    06/09/05 - LLL - Completely redid the carriage control handling
+                     to correct the botched job I did with machine
+                     CCs.  I believe it's finally right, but WATCH OUT!
+
+    03/17/04 - LLL - Fixed stdin/stdout I/O for Regina and Uni-rexx.
+                     Added 1, 4, 8, and 24 bit UNCOMPRESSED BMP image
+                       file support.
+                     Added new TILE action to the IMAGE parameter.
+
+    03/03/04 - LLL - Added OMVS support. (Larry)
+
+    02/16/04 - LLL - Further suggestions from Hartmut to allow easier
+                     use of TXT2PDF on "non-English" systems.
+
+                     While this change was "minor" in complexity, it
+                     did involve some global (hahaha) changes.  So, you
+                     might want to do a little extra testing before
+                     using in production.
+
+                     Those changes were to replace all "\" characters
+                     and make locating "|" characters easier.
+
+    02/14/04 - LLL - Contribution from Lionel to base CC on RECFM under
+                       TSO instead of forcing to NO.  This is the way
+                       it SHOULD have been all along, so it's my fault
+                       for the behavior change.
+
+                     NOTE:  Since this changes prior behavior, make
+                            CERTAIN you check your jobs to verify that
+                            either you have specified CC or you are
+                            okay with allowing TXT2PDF to decide for
+                            you.
+
+                     Added 2 arguments to the IMAGE DRAW paramenter that
+                       allow you to specify the page number and interval
+                       at which the image should be drawn. (Perry)
+                     Added automatic page sizing based on the largest
+                       IMAGE printed on the page. (Perry)
+                     Added (unverified) Turkish cset support. (Ibrahim)
+                     Changed the way barred and holed paper is drawn.
+                       Acrobat's TABLE SELECTION TOOL doesn't work when
+                       a PDF contains Form XObjects.  (Well that's what
+                       I "think" the reason is.)  'Sides, the new way
+                       produces smaller PDFs.  (Len)
+                     Large images brought out a bug that's probably
+                       been there since the 03/01/2002 update.
+                       (Thanks to Perry for reporting this one!)
+                     Added DEFCFG parameter to allow specification of
+                       a default CONFIG file name.  This would be used
+                       in your local TXT2PDFD EXEC. (Perry)
+                     Added XLATE parameter to allow you to change the
+                       translation tables at runtime.  This allows
+                       you to override any tables set with the TXT2PDFX
+                       EXEC. (Hartmut)
+                     Added TEXT parameter for changing the appearance
+                       of the input text. (Charles)
+    10/26/03 - LLL - Fixed missing font error when using DRAW TEXT and
+                       no background
+                     Replace CMS file instead of appending (Frank)
+                     Added MAG keyword for setting initial level (Len)
+                     Added STRING type to DRAW keyword (Len)
+                     Added ability to specify date/time formats in
+                       TEXT type of DRAW keyword (Len)
+                     Couple of minor comment and variable cleanups
+    10/09/03 - LLL - Modified to support COMPRESS on the CMS platform
+                     (Real credit goes to Frank!  He did all the work.)
+                     New files:  T2PCOMP ASSEMBLE/MODULE
+    10/08/03 - FMR - Modified to support ENCRYPT on the CMS platform
+                     New files:  T2PARC4 ASSEMBLE/MODULE
+                                 T2PMD5  ASSEMBLE/MODULE
+                                 T2PMAC  MACLIB (support above)
+    08/12/03 - LLL - Fixed Textmark (keyed GB instead of BG...GRRR!!!)
+                     Added TEXT type to the new DRAW keyword.
+                     OS/390 files name can be mixed case now (old bug!)
+    08/10/03 - LLL - Fixed $(stem.) processing in Issue() (extra line)
+                     Cleaned up use of quotes and aposts
+                     Added DRAW keyword for drawing rectangles and lines
+                     Added IMAGE keyword to support use of JPEG images
+                     IN and OUT are now optional on platforms that have
+                       stdin and stdout
+                     Messages are written to stderr on platforms that
+                       have it
+                     Can now run as a PIPELINE stage under CMS
+                     When running as a PIPE stage, messages are issued
+                       using the MESSAGE subcommand
+                     Minor cosmetic changes (comments, blank lines, ...)
+    08/06/03 - LLL - Fixed loop when reading files under CMS
+                     Added UNPACK stage to file input under CMS
+    08/04/03 - LLL - Added "+" as additional continuation method in
+                     config files
+    07/22/03 - LBD - Fix Input file DD:
+    07/07/03 - LBD - Add HLQ if needed for Input and Ouput files
+    05/28/03 - LBD - Add secondary space allocation to AllocOutput
+    05/05/03 - LLL - Added MAXOSIZE keyword and ability to limit size
+                     of output files. (Joe Bruns)
+                     Added RECALL to LISTDSI when allocating output DSN
+                     to prevent an allocation error.
+    04/25/03 - LLL - Reworked write routine to handle large page sizes
+                     and any LRECL from existing files. (John Bos)
+    03/08/03 - LLL - Added IFEMPTY to control behavour when the input
+                     file is empty. (Len Steele)
+    12/02/02 - LLL - Fixed the TEXTMARK background type.  It now figures
+                     dimensions and offsets correctly for all page sizes
+                     above the font size chosen.
+                     Added TMARK background type.  It's the same as the
+                     TEXTMARK type, but allows the font size to be
+                     specified.  (Sorry, still can't change the font.)
+    11/22/02 - LLL - Added NonFullScreen argument to Viewer keyword
+                     Fixed an incorrect node count for Outlines (Len S.)
+                     Fixed an incorrect offset for Outline destination
+                     Fixed an incorrect line count for paging
+    11/21/02 - LLL - Fixed relative column error when extracting text
+                     for SCAN* outline types.  (Thanks to Len Steele)
+    11/09/02 - LLL - Added rudimentary external font support
+                       (Thanks to Mitko's request and testing)
+                     Added ability to change message level
+                     Externalized the internal translation table to
+                       allow correct translation of internal program
+                       text.  (Wow!  Did that make sense.  :-))
+                     Suppressed initial page break for '89'x machine
+                       carriage control character.  (What is the right
+                       way to do machine CC?!?!?!)
+    10/22/02 - LLL - Added (minimal) ASCII carriage control support
+    10/21/02 - LLL - Removed erroneous TRACE statement (bad, bad dog!)
+    10/07/02 - LLL - Added line continuation support to config files
+                     Added comment support in config files
+                     Added compression results
+                     Added return code of 8 for errors
+                     Added 2 more blanks to textmark to fix cropping
+                     Display which config files were used
+    10/06/02 - LLL - Added compression support (TSO et al again)
+    09/30/02 - LLL - Added uni-REXX support
+    09/27/02 - LBD - Remove 4 lines per Leland
+    09/16/02 - LLL - Fully qualify the same as XMITIP
+               LBD - Removed the qualify routine as unused
+    09/14/02 - LBD - Do NOT fully qualify the output data set
+    09/08/02 - LLL - Added UNITS keyword
+                     Added TXT2PDFD defaults EXEC
+                     Allow centimeters for paper size and margins
+    09/06/02 - LBD - Fix undefined variable gsGennedPw
+    09/05/02 - LBD - Call TXT2PDFI if No parms and under ISPF
+    09/04/02 - LLL - Added specific check and message for truncated
+                       output.
+    09/01/02 - LLL - Relocated calls to T2PINIT and T2PTERM routines
+    08/30/02 - LLL - Added calls to new T2PINIT and T2PTERM routines to
+                       improve encryption performance
+                     Generate owner password if neither is specified
+                     Added conversion complete message
+                     Change external translate table routine to TXT2PDFX
+                     Allow external translate table on all platforms
+                     Allow use of embedded translate table if external
+                       routine not found
+                     Some minor cleanup (indents and comments)
+    08/27/02 - LLL - Fixed NoHiresPrint encryption permission
+                     Display encryption length and permissions
+                     Cleaned up some comments
+    08/16/02 - LLL - Fixed text string bug (rpted by Len Steele)
+    08/12/02 - LLL - Put argument handlers in alphabetical order
+                     Made some doc and comment updates
+                     Setup defaults for ANNOT keyword
+    08/11/02 - LLL - Added BU and TD aliases to the TEXTMARK stream type
+                     Added encryption support (ONLY) for TSO et al
+                     (All platforms will be supported in the C version)
+    08/03/02 - LLL - Added support for language specific message tables
+    08/01/02 - LLL - Added SHOW OLOPT option (The Lenster)
+                     Added HLQ option for Lionel
+                     Fixed BROWSE (only browsing 1st line)
+                     Fixed double/triple line counting problem
+                     (Reported by: Sergey Makogonov)
+
+                     Reread the manual about machine CC and removed
+                     the printing of the line for immediate commands.
+                     (Let me know if I'm too dense to get it...)
+
+    07/12/02 - LLL - Added OUTREC parameter (Yep, Len)
+    07/18/02 - LLL - Fixed OLTOK critter (Guess who?)
+                     Added a dest to the intermediate Outline nodes
+    07/12/02 - LLL - Added OUTREC parameter (Yep, Len)
+    07/11/02 - LLL - Added DUPS OLOPT option (Len again)
+    07/10/02 - LLL - Several critter complaints from Len Steele fixed
+    07/06/02 - LLL - Wow!  Found a bug that has existed since before
+                     this became a part XMITIP.  Acrobat didn't have a
+                     problem with it, but the pdfinfo ute in the Xpdf
+                     package pointed it out.  Checked the spec and,
+                     sure enough, it was a bug.  What was it?
+
+                     There was an extra blank at the end of the first
+                     entry in the "xref" table.  (Oh, the shame!!!)
+
+    07/05/02 - LLL - Added VONLY option
+                     Added opacity argument to TEXTMARK stream
+    06/30/02 - LLL - Added ANNOT option
+                     Added VIEWER option
+                     Added PAGE option
+                     Added TRANS option
+                     Added OUTLINE option
+                     Added OLOPT option
+                     Added OLSORT option
+                     Added OLTOK option
+                     Added TEXTMARK STREAM type
+                     Standardized color handling
+                     Added HTML colorspec capability
+                     Routed IDX function through OUTLINE option
+                     Changed all "<>" to "\="...why?  Felt like it. ;-)
+                     Moved and updated the usage information
+                     Cleaned up a few variable names
+
+                     (PAGE and TEXTMARK additions prompted
+                       by discussions with Len Steele.)
+
+                     (OUTLINE option inspired by Neal
+                       Gooch's multiple level indexing.)
+
+    06/24/02 - LLL - Corrected document info.  Thx to:
+                       Len Steele
+    05/10/02 - LLL - Corrected IDX keyword usage info
+    05/09/02 - NEG - Moved some initialisation to before
+                       Environ check
+                     Added support for IBM's Object Rexx
+                     Added multiple level indexing
+    04/26/02 - LLL - Last input record was ignored - fixed
+    03/25/02 - LBD - Add TRACKS to output alloc
+    03/12/02 - LLL - Standardized font and color handling
+                     Print color names instead of values
+                     Supress print of unspecified arguments
+    03/04/02 - LLL - Swapped font name and size in argument
+    03/01/02 - LLL - Split read/write I/O granularity
+                     Forced queuing of entire file if not to
+                       DD under TSO
+    02/28/02 - LLL - Added I/O granularity (gnReadC controls it)
+                     Rewrote the Escape() routine
+                     Performance tuning
+    02/19/02 - LLL - Many changes including:
+
+                     Converted to standalone app
+                     Renamed to TXT2PDF (better ideas?)
+                     Fixed some bugs (and added some :-))
+                     Restructured codepage translation
+                     Reworked document info
+                     Reworked multi-platform support
+                     Reworked all variable names
+                     Introduced drawing areas
+                     Added indexing
+                     Added color support
+                     Added "barred" paper background
+                     Added "holed" paper background
+                     Added font selection
+                     Added font zoom
+                     Added bold and italic support
+                     Added pregenerated backgraounds
+                     Added config file support
+                     Added document information support
+
+    02/06/02 - LLL - Several fixes from Leland to fix the
+                     generated PDF
+    10/26/01 - LBD - fix for data with cc but not in the data.
+    10/19/01 - LBD - drop some variable to save stg
+    10/09/01 - LBD - correction to newpage if no cc
+    09/27/01 - LBD - changed rlse to release (sigh)
+    09/26/01 - LBD - add rlse to alloc
+    09/25/01 - LBD - add dsorg to alloc
+    08/31/01 - LBD - update for machine cc
+    04/07/01 - AHW - support CMS and Regina
+    04/07/01 - AHW - support Document Info Dictionary
+    02/06/01 - AWR - rework escaping
+    01/03/01 - LBD - add call for encoding
+    11/28/00 - LBD - change parse to add spaces
+    11/21/00 - LBD - fit  9-72 cols
+    11/15/00 - AWR - modified for two xlate tables
+    11/15/00 - AWR - modified to strip trailing blank
+    11/08/00 - LBD - moved translate table to XMITIPTR
+    07/13/00 - LBD - corrections
+    07/12/00 - LLL - update by Leland to Machine CC
+    07/12/00 - LBD - conversion completed - it works now
+    06/18/00 - LBD - converted for XMITIP usage
+

@@ -1,0 +1,28 @@
+)Attr Default(%+_)
+/* + type(text  ) intens(low )                   information only  */
+   _ type( input) intens(high) caps(off) just(left )
+   # type(output) intens(high) caps(off) just(left )
+   + type(text) intens(low) skip(on)
+   $ type( input) intens(non) caps(off) just(left )
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(blue) hilite(reverse)
+   @ type(text) intens(high) color(blue)
+)Body Expand(\\)
+%-\-\- ~TXT2PDF FTP Prompt% -\-\-
+%Command ===>_zcmd
++
++ @PDF Data Set: #output
++ @Target File : _target
++ @Target Host : _host
++
++ @Target Userid  : _userid
++ @Target Password: $pw           @Confirm Password: $cpw
++
+)Init
+ .cursor = target
+)Proc
+ ver (&target,nb)
+ ver (&host,nb)
+ ver (&userid,nb)
+ ver (&pw,nb,list,&cpw)
+)End

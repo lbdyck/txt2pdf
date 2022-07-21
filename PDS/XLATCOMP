@@ -1,0 +1,15 @@
+XLATCOMP brief documentation:
+
+  parms:
+    (no parms)  - compare XLATE000 - TXT2PDFX (default)
+    1st table   - compare 1st tab  - TXT2PDFX
+    1st 2nd     - compare 1st tab  - 2nd tab
+
+    ? or H(elp) - get this HELP infos
+
+
+This tool can be used to check TXT2PDF translation tables.
+ - show all differences in TEXT and DATA parts
+ - check length (2 * 256 = 512 required) of the translation TABs
+ - check all HEX values of the TABs (find duplicates)
+

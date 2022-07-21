@@ -1,0 +1,40 @@
+)Attr Default(%+_)
+/* + type(text  ) intens(low )                   information only  */
+   _ type( input) intens(high) caps(off) just(left )
+   # type( input) intens(high) caps(off) just(left ) pad(_)
+   + type(text) intens(low) skip(on)
+   $ type( input) intens(high) caps(on ) just(left ) pad(_)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(blue) hilite(reverse)
+   @ type(text) intens(high) color(blue)
+)Body Expand(\\)
+%-\-\- ~Text-to-PDF - Background% -\-\-
+%Command ===>_zcmd
++
+  @Style      :+ _bgs         +   TopDown (TD) or BottomUp (BU)
+  @Text Color :+ _btc         +   see below
+  @Fill Color :+ _bfc         +   see below
+  @Opacity    :+ _bfo+            100 for solid to 0 for transparent
+  @Text       :+ _btext                                 +
++
++ Valid Color specifications are:
++
++~Color+    ~Abbrev+ ~Color+   ~Abbrev+  ~Color+   ~Abbrev+  ~Color+   ~Abbrev+
++ Aqua      ~A+      +Gray     ~Gra+     +Navy     ~N+       +Silver   ~S+
++ Black     ~Bla+    +Green    ~Gre+     +Olive    ~O+       +Teal     ~T+
++ Blue      ~Blu+    +Lime     ~L+       +Purple   ~P+       +White    ~W+
++ Fuchsia   ~F+      +Maroon   ~M+       +Red      ~R+       +Yellow   ~Y+
+)Init
+ .cursor = bgs
+ &bgs = trans(trunc(&bgs,1) T,TD t,TD B,BU b,BU &z,BU)
+ &bfo = trans(&bfo &z, 100 *,*)
+ &btc = trans(&btc &z,Black *,*)
+ &bfc = trans(&bfc &z,Gray *,*)
+)Proc
+ &bgs = trans(trunc(&bgs,1) T,TD t,TD B,BU b,BU &z,BU *,*)
+ ver (&bgs,nb,list,TD,BU)
+ &btc = trans(&btc &z,Black *,*)
+ &bfc = trans(&bfc &z,Gray *,*)
+ ver (&bfo,range,0,100)
+ ver (&btext,nb)
+)End

@@ -1,0 +1,31 @@
+)Attr Default(%+_)
+/* + type(text  ) intens(low )                   information only  */
+   _ type( input) intens(high) caps(on ) just(left )
+   + type(text) intens(low) skip(on)
+   $ type( input) intens(high) caps(on ) just(left ) pad(_)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(blue) hilite(reverse)
+   @ type(output) intens(high) color(blue) just(right)
+)Body Expand(\\)
+%-\-\- ~Text-to-PDF @ver % -\-\-
+%Command ===>_zcmd
++
++ Input data set   %===>_input
++ Output data set  %===>_output
++                       must be new data set or new member (should end in .pdf)
++
+~Optional information:+(select to display prompting panel)+
++
+   $z+Annot                           $z+Background
+   $z+Color                           $z+Document Information
+   $z+Encryption                      $z+Font Specification
+   $z+Miscellaneous options           $z+Outline Options
+   $z+Page Specification              $z+Validation Only
+)Init
+ .cursor = input
+ .help = t2ph0
+ .zvars = '(annot backgrnd color dinfo encrypt font misc outline page valid )'
+)Proc
+ ver (&input,nb,dsname)
+ ver (&output,nb,dsname)
+)End

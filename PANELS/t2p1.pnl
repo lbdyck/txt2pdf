@@ -1,0 +1,36 @@
+)Attr Default(%+_)
+/* + type(text  ) intens(low )                   information only  */
+   _ type( input) intens(high) caps(off) just(left )
+   # type( input) intens(high) caps(off) just(left ) pad(_)
+   + type(text) intens(low) skip(on)
+   $ type( input) intens(high) caps(on ) just(left ) pad(_)
+   % type(text) intens(high)
+   ~ type(text) intens(high) color(blue) hilite(reverse)
+   @ type(text) intens(high) color(blue)
+)Body Expand(\\)
+%-\-\- ~Text-to-PDF - Annotation% -\-\-
+%Command ===>_zcmd
++
+  @Page:    _apage +     First, Last, All
+  @Row:     _arow  +     Row placement from top of page
+  @Column:  _acol+       Column placement from left
+  @State:   _astate+     Open or Closed
+  @Text:    #atext1                                                         +<
+            #atext2                                                         +<
+            #atext3                                                         +<
++
+)Init
+ .cursor = apage
+)Proc
+  &apage = trans(trunc(&apage,1) F,First f,First
+                                 L,Last  l,Last
+                                 A,All   a,All
+                                 &z,ALL *,*)
+  ver(&apage,list,First,Last,All)
+  ver(&arow,range,1,9999)
+  ver(&acol,range,1,9999)
+  &astate = trans(trunc(&astate,1) O,Open o,Open
+                                   C,Closed c,Closed
+                                   *,*)
+  ver (&astate,list,Open,Closed)
+)End
